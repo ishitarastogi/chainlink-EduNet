@@ -1,10 +1,6 @@
 # <div align="center">EduNet 💡</div>
 
-# Technologies Used:
 
-Chainlink: Dynamic NFTs   
-Superfluid: CFA   
-Livepeer: video upload and online streaming  
 
 # Project Idea:
 
@@ -20,3 +16,9 @@ Rewards are always a great way to appreciate people for their hard work and stri
 Many times we see users want to watch only a certain part of the course but they have to buy the complete course to watch that part. They either buy the complete course which costs them a lot or they buy a course and claim a refund after one month which is not justified for the creator.  So now it’s a win-win situation for both users and content creators.
 
 Dynamic NFT will be distributed based on completion of certain checkpoints to users to encourage them. It will be given in both paid and unpaid courses. These Dynamic NFT also have some utility.
+
+# Technologies Used:
+
+Chainlink: Dynamic NFTs   
+Superfluid: CFA   
+Livepeer: video upload and online streaming  
