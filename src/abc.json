@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "metadata_id": "968c5fc7-6d78-4a3f-a4e2-32d7b8913bbc",
+  "description": "NFT Description",
+  "content": "Hello",
+  "locale": "en-US",
+  "tags": ["nft1"],
+  "mainContentFocus": "TEXT_ONLY",
+  "name": "Temp NFT1",
+  "image": "https://scx2.b-cdn.net/gfx/news/hires/2018/lion.jpg",
+  "imageMimeType": "image/jpeg",
+  "attributes": [
+    {
+      "traitType": "legs",
+      "value": "frog",
+      "displayType": "string"
+    }
+  ],
+  "appId": "tempsxs"
+}

@@ -1,27 +1,46 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
+import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
+import { apolloClient } from "../src/lib/apollo/apollo-client";
+import {
+  LivepeerConfig,
+  createReactClient,
+  studioProvider,
+} from "@livepeer/react";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
+import { ApolloProvider } from "@apollo/client";
 
-const { chains, provider } = configureChains(
+import { publicProvider } from "wagmi/providers/public";
+import App from "./App";
+import "./index.css";
+
+// import { library } from "@fortawesome/fontawesome-svg-core";
+// import { faXmarkSquare } from "@fortawesome/free-solid-svg-icons";
+
+// library.add(faXmarkSquare);
+
+const { chains, provider, webSocketProvider } = configureChains(
   [
-    chain.mainnet,
     chain.polygonMumbai,
-    chain.polygon,
-    chain.optimism,
-    chain.arbitrum,
+
+    ...(process.env.REACT_APP_ENABLE_TESTNETS === "true"
+      ? [chain.polygonMumbai]
+      : []),
   ],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
+  [alchemyProvider({ alchemyId: process.env.ALCHEMY_ID }), publicProvider()]
 );
 
+const livepeerClient = createReactClient({
+  provider: studioProvider({
+    apiKey: process.env.LIVE_API_KEY,
+  }),
+});
 const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
+  appName: "RainbowKit demo",
   chains,
 });
 
@@ -29,19 +48,23 @@ const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,
+  webSocketProvider,
 });
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <App />
-      </RainbowKitProvider>
-    </WagmiConfig>
-  </React.StrictMode>
+    <ApolloProvider client={apolloClient()}>
+      <WagmiConfig client={wagmiClient}>
+        <LivepeerConfig client={livepeerClient}>
+          <RainbowKitProvider chains={chains}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>{" "}
+          </RainbowKitProvider>
+        </LivepeerConfig>{" "}
+      </WagmiConfig>
+    </ApolloProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
